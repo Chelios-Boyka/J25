@@ -2,6 +2,7 @@ package net.j25.bancking_app.service.impl;
 
 import net.j25.bancking_app.dto.AccountDto;
 import net.j25.bancking_app.entity.Account;
+import net.j25.bancking_app.exception.AccountException;
 import net.j25.bancking_app.mapper.AccountMapper;
 import net.j25.bancking_app.repository.AccountRepository;
 import net.j25.bancking_app.service.AccountService;
@@ -32,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository
                 .findById(id)
                 .orElseThrow(
-                        ()-> new RuntimeException("Account not found"));
+                        ()-> new AccountException("Account not found"));
 
         return AccountMapper.mapToAccountDto(account);
     }
@@ -42,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository
                 .findById(id)
                 .orElseThrow(
-                        ()-> new RuntimeException("Account not found"));
+                        ()-> new AccountException("Account not found"));
         double total = account.getBalance() + amount;
         account.setBalance(total);
         Account savedAccount = accountRepository.save(account);
@@ -56,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = accountRepository
                 .findById(id)
-                .orElseThrow(()-> new RuntimeException("Account not found"));
+                .orElseThrow(()-> new AccountException("Account not found"));
 
         if(account.getBalance() < amount){
             throw new RuntimeException("Insufficient funds");
@@ -83,7 +84,7 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = accountRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new AccountException("Account not found"));
 
         accountRepository.delete(account);
     }
